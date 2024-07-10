@@ -11,4 +11,4 @@ for tag in $TAGS; do
 	echo "$tag | $coredns_version | $etcd_version"
 done
 
-git switch -q master
+git switch -q get-versions
