@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-TAGS="$(git tag --sort=version:refname | grep -E '^v1\.[2-3][0-9]\.[0-9]{1,2}$' | grep -v 'v1.2[0-6]')"
+TAGS="$(git tag --sort=version:refname | grep -E '^v1\.[2-3][0-9]\.[0-9]{1,2}$' | grep -v 'v1.2[0-7]')"
 
 echo 'k8s | coredns | etcd | pause'
 
