@@ -12,7 +12,7 @@ for tag in $TAGS; do
 	etcd_version="$(grep 'DefaultEtcdVersion =' cmd/kubeadm/app/constants/constants.go | sed -E 's/.*"(.*)".*/\1/')"
 	pause_version="$(grep 'PauseVersion =' cmd/kubeadm/app/constants/constants.go | sed -E 's/.*"(.*)".*/\1/')"
 
-	printf '%s | %s | %s | %s' "$tag" "$coredns_version" "$etcd_version" "$pause_version"
+	printf '%s | %s | %s | %s |' "$tag" "$coredns_version" "$etcd_version" "$pause_version"
 	if [ "$coredns_version" != "$previous_coredns_version" ]; then
 		printf ' *coredns*'
 	fi
