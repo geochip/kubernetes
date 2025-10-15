@@ -1,14 +1,33 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-TAGS="$(git tag --sort=version:refname | grep -E '^v1\.[2-3][0-9]\.[0-9]{1,2}$' | grep -v 'v1.2[0-9]')"
+from=${1:-'28'}
+to=${2:-'34'}
 
-format='%-8s | %-7s | %-8s | %-5s |'
+(( "$from" >= 21 && "$from" <= 34 )) || {
+	echo "$0: invalid \`from' argument '$from', must be between 21 and 34" >&2
+	exit 1
+}
+
+(( "$to" >= 21 && "$to" <= 34 )) || {
+	echo "$0: invalid \`to' argument '$to', must be between 21 and 34" >&2
+	exit 1
+}
+
+tags="$(git tag --sort=version:refname | grep -E '^v1\.[1-3][0-9]\.[0-9]{1,2}$')"
+
+format='%-8s | %-7s | %-8s | %-6s | %s'
 # shellcheck disable=SC2059
-printf "$format\n" k8s coredns etcd pause
+printf "$format\n" k8s coredns etcd pause updated
 
 previous_coredns_version=
 previous_etcd_version=
-for tag in $TAGS; do
+for tag in $tags; do
+	minor_version="${tag:3}"
+	minor_version="${minor_version%%.*}"
+
+	(( "$minor_version" >= "$from" )) || continue
+	(( "$minor_version" <= "$to" )) || break
+
 	coredns_version="$(git show "${tag}:cmd/kubeadm/app/constants/constants.go" | grep 'CoreDNSVersion =' | sed -E 's/.*"v(.*)".*/\1/')"
 	etcd_version="$(git show "${tag}:cmd/kubeadm/app/constants/constants.go" | grep 'DefaultEtcdVersion =' | sed -E 's/.*"(.*)".*/\1/')"
 	pause_version="$(git show  "${tag}:cmd/kubeadm/app/constants/constants.go" | grep 'PauseVersion =' | sed -E 's/.*"(.*)".*/\1/')"
