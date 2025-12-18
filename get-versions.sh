@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
 
-from=${1:-'28'}
-to=${2:-'34'}
+min_version=21
+max_version=35
 
-(( "$from" >= 21 && "$from" <= 34 )) || {
-	echo "$0: invalid \`from' argument '$from', must be between 21 and 34" >&2
+from=${1:-$(($max_version - 3))}
+to=${2:-$max_version}
+
+(( "$from" >= "$min_version" && "$from" <= "$max_version" )) || {
+	echo "$0: invalid \`from' argument '$from', must be between $min_version and $max_version" >&2
 	exit 1
 }
 
-(( "$to" >= 21 && "$to" <= 34 )) || {
-	echo "$0: invalid \`to' argument '$to', must be between 21 and 34" >&2
+(( "$to" >= "$min_version" && "$to" <= "$max_version" )) || {
+	echo "$0: invalid \`to' argument '$to', must be between $min_version and $max_version" >&2
 	exit 1
 }
 
