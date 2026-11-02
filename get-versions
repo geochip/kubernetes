@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 min_version=21
-max_version=36
+max_version=37
 
 from=${1:-$((max_version - 3))}
 to=${2:-$max_version}
